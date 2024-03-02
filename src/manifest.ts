@@ -16,7 +16,7 @@ export default defineManifest({
     128: 'img/logo-128.png',
   },
   action: {
-    default_popup: 'popup.html',
+    // default_popup: 'popup.html',
     default_icon: 'img/logo-48.png',
   },
   options_page: 'options.html',
@@ -27,7 +27,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*'],
+      matches: ['https://groq.com/*'],
       js: ['src/contentScript/index.ts'],
     },
   ],
@@ -40,7 +40,7 @@ export default defineManifest({
       matches: [],
     },
   ],
-  permissions: ['sidePanel', 'storage',],
+  permissions: ['sidePanel', 'storage', 'tabs', 'activeTab'],
   chrome_url_overrides: {
     newtab: 'newtab.html',
   },
