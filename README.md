@@ -23,8 +23,8 @@ $ npm i
 $ npm run dev
 ```
 
-### Chrome Extension Developer Mode
+### Loading the Chrome Extension
 
 1. Turn on Chrome 'Developer mode'
 2. Click 'Load unpacked', and select `groq-voice-chat/build` folder
-3. Head to [Groq chat](https://groq.com) and tap on the "Push to Talk" button to get staretd.
+3. Head over to [Groq chat](https://groq.com) and tap on the "Push to Talk" button to get started.
