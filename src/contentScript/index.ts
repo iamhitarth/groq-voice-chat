@@ -1,21 +1,19 @@
 console.info('contentScript is running')
 
-//@ts-ignore
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-let recognition = null
-let observer = null
+const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+let recognition: typeof SpeechRecognition | null = null;
+let observer: MutationObserver | null = null;
 
-const findElementByText = (text) => {
+const findElementByText = (text: string): HTMLElement | null => {
   // Get all elements that could potentially contain the text.
   const elements = document.querySelectorAll('main *')
 
   // Iterate over the collected elements to find a match.
   for (const element of elements) {
-    if (element.innerText === text) {
-      return element
+    if ((element as HTMLElement).innerText === text) {
+      return element as HTMLElement;
     }
   }
-
   // If no element with the given text is found, return null.
   return null
 }
@@ -36,12 +34,12 @@ const setupDOMObserver = () => {
     // If the element is not found, it means the mutations are likely completed
     if (!STOPButtonElement) {
       console.log('Response from model is likely completed.')
-      const utterance = new SpeechSynthesisUtterance(
-        document.querySelectorAll('div.font-montserrat p.text-left')[0].innerText,
-      )
-      window.speechSynthesis.speak(utterance)
-
-      // TODO hacky - hook this to when submit button is clicked - try adding this to mousedown event listener
+      const paragraphElement = document.querySelectorAll('div.font-montserrat p.text-left')[0];
+      if (paragraphElement instanceof HTMLElement) {
+        const utterance = new SpeechSynthesisUtterance(paragraphElement.innerText);
+        window.speechSynthesis.speak(utterance);
+      }
+      // TODO hacky - try adding this to mousedown event listener
       const textarea = document.querySelector('form.w-full textarea')
       if (textarea instanceof HTMLTextAreaElement) {
         textarea.value = ''
@@ -65,7 +63,7 @@ const startSpeechRecognition = () => {
   if (typeof SpeechRecognition !== 'undefined') {
     recognition = new SpeechRecognition()
 
-    const onResult = (event) => {
+    const onResult = (event: { results: any; }) => {
       let transcribed = ''
       for (const res of event.results) {
         transcribed += res[0].transcript
