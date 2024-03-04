@@ -31,9 +31,9 @@ export default defineManifest({
       js: ['src/contentScript/index.ts'],
     },
   ],
-  side_panel: {
-    default_path: 'sidepanel.html',
-  },
+  // side_panel: {
+  //   default_path: 'sidepanel.html',
+  // },
   web_accessible_resources: [
     {
       resources: ['img/logo-16.png', 'img/logo-34.png', 'img/logo-48.png', 'img/logo-128.png'],
@@ -41,7 +41,7 @@ export default defineManifest({
     },
   ],
   permissions: ['sidePanel', 'storage', 'tabs', 'activeTab'],
-  chrome_url_overrides: {
-    newtab: 'newtab.html',
-  },
+  // chrome_url_overrides: {
+  //   newtab: 'newtab.html',
+  // },
 })

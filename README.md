@@ -2,7 +2,7 @@
 
 An experimental Google Chrome extension for adding a voice interface on top of the [Groq chat](https://groq.com).
 
-Generated using [create-chrome-ext](https://github.com/guocaoyi/create-chrome-ext) and built with Vite + React, and Manifest v3.
+Generated using [create-chrome-ext](https://github.com/guocaoyi/create-chrome-ext) and built with Vite + React and Web Speech API.
 
 ## Pre-requisites
 
@@ -28,3 +28,10 @@ $ npm run dev
 1. Turn on Chrome 'Developer mode'
 2. Click 'Load unpacked', and select `groq-voice-chat/build` folder
 3. Head over to [Groq chat](https://groq.com) and tap on the "Push to Talk" button to get started.
+
+
+## TODOs
+This can be added on top of any chatbots as long as:
+* we have a place to insert the push to talk button.
+* we know where to transcribe the user's speech to.
+* we have a way of knowing when the model response is done.

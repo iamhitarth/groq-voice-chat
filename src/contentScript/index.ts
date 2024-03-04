@@ -1,8 +1,10 @@
 console.info('contentScript is running')
 
-const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-let recognition: typeof SpeechRecognition | null = null;
-let observer: MutationObserver | null = null;
+let submitButton: HTMLButtonElement | null;
+const SpeechRecognition =
+  (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+let recognition: typeof SpeechRecognition | null = null
+let observer: MutationObserver | null = null
 
 const findElementByText = (text: string): HTMLElement | null => {
   // Get all elements that could potentially contain the text.
@@ -11,7 +13,7 @@ const findElementByText = (text: string): HTMLElement | null => {
   // Iterate over the collected elements to find a match.
   for (const element of elements) {
     if ((element as HTMLElement).innerText === text) {
-      return element as HTMLElement;
+      return element as HTMLElement
     }
   }
   // If no element with the given text is found, return null.
@@ -34,10 +36,10 @@ const setupDOMObserver = () => {
     // If the element is not found, it means the mutations are likely completed
     if (!STOPButtonElement) {
       console.log('Response from model is likely completed.')
-      const paragraphElement = document.querySelectorAll('div.font-montserrat p.text-left')[0];
+      const paragraphElement = document.querySelectorAll('div.font-montserrat p.text-left')[0]
       if (paragraphElement instanceof HTMLElement) {
-        const utterance = new SpeechSynthesisUtterance(paragraphElement.innerText);
-        window.speechSynthesis.speak(utterance);
+        const utterance = new SpeechSynthesisUtterance(paragraphElement.innerText)
+        window.speechSynthesis.speak(utterance)
       }
       // TODO hacky - try adding this to mousedown event listener
       const textarea = document.querySelector('form.w-full textarea')
@@ -63,7 +65,7 @@ const startSpeechRecognition = () => {
   if (typeof SpeechRecognition !== 'undefined') {
     recognition = new SpeechRecognition()
 
-    const onResult = (event: { results: any; }) => {
+    const onResult = (event: { results: any }) => {
       let transcribed = ''
       for (const res of event.results) {
         transcribed += res[0].transcript
@@ -95,9 +97,6 @@ const stopSpeechRecognition = () => {
 }
 
 const addPushToTalkButton = () => {
-  // Find the submit button or its container
-  const submitButton = document.querySelector('form.w-full button[type="submit"]')
-
   // Create the Push to Talk button
   const pushToTalkButton = document.createElement('button')
   pushToTalkButton.textContent = 'Push to Talk'
@@ -135,6 +134,13 @@ const addPushToTalkButton = () => {
   }
 }
 
-addPushToTalkButton()
-setupDOMObserver()
+// Make sure the submit button exists before kicking off rest of the code
+const checkExist = setInterval(function () {
+  submitButton = document.querySelector('form.w-full button[type="submit"]')
+  if (submitButton) {
+    clearInterval(checkExist)
 
+    addPushToTalkButton()
+    setupDOMObserver()
+  }
+}, 100)
